@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Vocabulary Quiz</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px 12px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#080d2b,#172b59,#32145c);
+    color: white;
+}
+
+header {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+header h1 {
+    font-size: 30px;
+    color: #65e8ff;
+    text-shadow: 0 0 15px #00bfff;
+}
+
+header p {
+    color: #c7d8ff;
+}
+
+.container {
+    max-width: 750px;
+    margin: auto;
+}
+
+.card {
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 5px 20px #0005;
+}
+
+.question {
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.number {
+    color: #61e8ff;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.word {
+    color: #ffd66b;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    margin-top: 12px;
+    border: 2px solid #6b8dff;
+    border-radius: 10px;
+    background: #101b3b;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #60eaff;
+}
+
+.result {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.answer {
+    display: none;
+    color: #7dffb1;
+    margin-top: 10px;
+}
+
+button {
+    border: none;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.check {
+    background: linear-gradient(90deg,#00d2ff,#536dfe);
+    color: white;
+}
+
+.show {
+    background: #ffd166;
+    color: #222;
+}
+
+.reset {
+    background: #ff5277;
+    color: white;
+}
+
+.buttons {
+    text-align: center;
+    padding: 20px 0;
+}
+
+#score {
+    text-align: center;
+    font-size: 24px;
+    color: #70f7ff;
+    font-weight: bold;
+    padding: 20px;
+}
+
+footer {
+    text-align: center;
+    color: #aab9dc;
+    padding: 25px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>✦ ENGLISH QUIZ ✦</h1>
+    <p>VOCABULARY PRACTICE - 12 QUESTIONS</p>
+    <p>Hãy hoàn thành bài tập của bạn!</p>
+</header>
+
+<div class="container">
+
+<div id="questions"></div>
+
+<div class="buttons">
+    <button class="check" onclick="checkAll()">
+        ✓ KIỂM TRA ĐÁP ÁN
+    </button>
+
+    <button class="show" onclick="showAll()">
+        ✦ HIỆN ĐÁP ÁN
+    </button>
+
+    <button class="reset" onclick="resetAll()">
+        ↻ LÀM LẠI
+    </button>
+</div>
+
+<div id="score"></div>
+
+</div>
+
+<footer>
+    ✦ ENGLISH LEARNING WEBSITE ✦
+    <br><br>
+    Created with HTML, CSS & JavaScript
+</footer>
+
+<script>
+const data = [
+{
+q:"People in my ______ are friendly and always willing to help each other.",
+w:"(neighbour)",
+a:"neighbourhood"
+},
+{
+q:"The new library is fully ______ with computers, projectors, and air conditioners.",
+w:"(equip)",
+a:"equipped"
+},
+{
+q:"The handmade products were ______ displayed in the shop windows to attract customers.",
+w:"(attract)",
+a:"attractively"
+},
+{
+q:"Visitors from ______ villages often come here to enjoy the traditional festival.",
+w:"(neighbour)",
+a:"neighbouring"
+},
+{
+q:"The nightlife in the city is incredibly ______, with bars, clubs, and live music venues open until the early hours.",
+w:"(live)",
+a:"lively"
+},
+{
+q:"Air pollution from traffic is a major concern, and efforts are being made to reduce ______ in the city.",
+w:"(pollute)",
+a:"pollution"
+},
+{
+q:"Public amenities make the town a ______ place for its residents.",
+w:"(live)",
+a:"liveable"
+},
+{
+q:"The river is too ______ for people to use its water safely.",
+w:"(pollute)",
+a:"polluted"
+},
+{
+q:"The school has invested heavily in modern teaching ______ to improve the quality of lessons.",
+w:"(equip)",
+a:"equipment"
+},
+{
+q:"The sudden power failure was caused by a problem with the ______ system.",
+w:"(electric)",
+a:"electrical"
+},
+{
+q:"The government encourages households to use ______ more efficiently during periods of high demand.",
+w:"(electric)",
+a:"electricity"
+},
+{
+q:"The ancient temple is one of the city's most famous tourist ______.",
+w:"(attraction)",
+a:"attractions"
+}
+];
+
+const area = document.getElementById("questions");
+
+data.forEach((item,i) => {
+    area.innerHTML += `
+    <div class="card">
+        <div class="question">
+            <span class="number">CÂU ${i+1}.</span>
+            ${item.q}
+            <br>
+            <span class="word">${item.w}</span>
+        </div>
+
+        <input
+            id="input${i}"
+            type="text"
+            placeholder="Nhập đáp án câu ${i+1}..."
+            autocomplete="off"
+        >
+
+        <div class="result" id="result${i}"></div>
+
+        <div class="answer" id="answer${i}">
+            Đáp án: ${item.a}
+        </div>
+    </div>
+    `;
+});
+
+function checkAll() {
+    let score = 0;
+
+    data.forEach((item,i) => {
+        let input = document
+            .getElementById("input"+i)
+            .value.trim().toLowerCase();
+
+        let result = document.getElementById("result"+i);
+
+        if(input === item.a) {
+            score++;
+            result.innerHTML = "✓ Chính xác!";
+            result.style.color = "#70ff9b";
+        } else {
+            result.innerHTML = "✗ Chưa đúng! Đáp án: " + item.a;
+            result.style.color = "#ff829b";
+        }
+    });
+
+    document.getElementById("score").innerHTML =
+        "🏆 KẾT QUẢ: " + score + " / 12 câu";
+}
+
+function showAll() {
+    data.forEach((item,i) => {
+        document.getElementById("answer"+i)
+        .style.display = "block";
+    });
+}
+
+function resetAll() {
+    data.forEach((item,i) => {
+        document.getElementById("input"+i).value = "";
+        document.getElementById("result"+i).innerHTML = "";
+        document.getElementById("answer"+i)
+        .style.display = "none";
+    });
+
+    document.getElementById("score").innerHTML = "";
+}
+</script>
+
+</body>
+</html>
